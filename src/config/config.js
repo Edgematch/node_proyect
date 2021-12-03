@@ -12,7 +12,7 @@ module.exports = {
     },
 
     server:{
-        port: 3800
+        port: process.env.PORT
     }
     
     
