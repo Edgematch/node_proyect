@@ -17,7 +17,7 @@ app.use(cors);
 app.use(guard);
 
 app.use(express.json());
-
+ 
 app.use(userRoutes);
 app.use(currencyRoutes);
 app.use(accountTypeRoutes);

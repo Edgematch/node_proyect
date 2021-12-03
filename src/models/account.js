@@ -19,6 +19,7 @@ Accounts.findById = (data)=>{
                                     b.description as "account_type",
                                     a.currency_id,
                                     c.description as "currency",
+                                    c.rate, 
                                     a.amount,
                                     TO_CHAR(a.created_at, 'DD-MM-YYYY') AS "add_date"
                                     FROM account a
@@ -38,6 +39,7 @@ Accounts.fetchAll = (data)=>{
                                     b.description as "account_type",
                                     a.currency_id,
                                     c.description as "currency",
+                                    c.rate,
                                     a.amount,
                                     TO_CHAR(a.created_at, 'DD-MM-YYYY') AS "add_date"
                                 FROM account a

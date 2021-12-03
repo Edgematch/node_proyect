@@ -68,13 +68,13 @@ module.exports.transferAccount = async (req, res, next) =>{
     const args = [req.body.from_account_id, req.body.to_account_id, Number(req.body.amount), req.user.uid];
     try{
         const fromAccount = await Account.findById([req.body.from_account_id, req.user.uid]);
-        const debit = await Number(fromAccount.rows[0].amount) - Number(req.body.amount)
-        const updateFormAccount = await Account.update([req.body.from_account_id, debit, req.user.uid])
-
-        const toAccount = await Account.findById([req.body.to_account_id, req.user.uid]);
-        const credit = await Number(toAccount.rows[0].amount) + Number(req.body.amount)
-        const updateToAccount = await Account.update([req.body.to_account_id, credit, req.user.uid])
-
+        const debit = await Number(fromAccount.rows[0].amount) - Number(req.body.amount);
+        const updateFormAccount = await Account.update([req.body.from_account_id, debit, req.user.uid]);
+        const to_USD = await Number(req.body.amount) / Number(fromAccount.rows[0].rate);
+        const toAccount = await Account.findById([req.body.to_account_id, req.user.uid]);       
+        const to_NAT = to_USD * Number(toAccount.rows[0].rate);
+        const credit = await Number(toAccount.rows[0].amount) + to_NAT
+        const updateToAccount = await Account.update([req.body.to_account_id, credit, req.user.uid]);
         res.status(200).json({valid: true, message: 'Transfer Complete'});
     }catch(err){
         res.status(400).json({valid: false, message: err.message});
